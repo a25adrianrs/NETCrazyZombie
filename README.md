@@ -1,3 +1,9 @@
+## Cambios realizados Parte 1
+
+- Elimine el script de **Start Session Manager** del **NetworkManager** que se usaba para crear los botones de **Host,Server y Client** y cree un GameObject de **Canvas** con una estructura igual que el usado en **NetTanks** con sus Buttons para cada una de las tres opciones y creé el script de **Connection Buttons** y se los asigne a los Botones para gestionar la conexión a traves de cada uno de ellos
+
+
+
 ## NETCrazyZombie multijugador
 
 ### Mejoras sugeridas:
