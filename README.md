@@ -2,16 +2,7 @@
 
 - Elimine el script de **Start Session Manager** del **NetworkManager** que se usaba para crear los botones de **Host,Server y Client** y cree un GameObject de **Canvas** con una estructura igual que el usado en **NetTanks** con sus Buttons para cada una de las tres opciones y creé el script de **Connection Buttons** y se los asigne a los Botones para gestionar la conexión a traves de cada uno de ellos.
 
-## Cambios realizados Parte 2
 
-- Modifique el prefab de Player primero cambiando su autoridad de **Server a Owner** igual que en **NetTanks** para que el jugador tenga el control del player ademas de evitar posibles lags que puedan surgir en **Server**.
-
-- Tambie modifique el script de **PlayerMovement** de manera que quede separado la lectura de los Input y la aplicación del movimiento.
-- En **Update()** se captura la entrada de los Input para ello la variable de Vector2 pasa a declararse a nivel de clase para poder ser usada en **Update y FixedUpdate**.
-- En el método **FixedUpdate()** se usan dos variables de Vector3, forward y right para calcular el movimiento del Player en función de su orientación, tabmien se elimina el componente vertical de ambos vectores para controlar que el player solo se mueva horizontalmente y evitar que pueda moverse hacia arriba o abajo según la orientación de la camara.
-
- - Luego se aplica el moviemento basado en los input del jugador , así como la orientación de la camara y la velocidad predefinida
- -  Por ultimo se mueve el RigidBody usando el **MovePosition**.
 
 ```csharp
  void FixedUpdate()
