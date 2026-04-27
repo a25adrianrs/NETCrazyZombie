@@ -4,10 +4,10 @@ using Unity.Netcode;
 public class BulletMove : NetworkBehaviour
 {
     public float speed = 10.0f;
-    public  float lifeTime = 5f;
+    public float lifeTime = 5f;
 
     public int PLAYER_DAMAGE = 10;
-    
+
     private void Start()
     {
         if (IsServer) // Solo el servidor controla la destrucción
@@ -22,7 +22,8 @@ public class BulletMove : NetworkBehaviour
     [Rpc(SendTo.Server)]
     private void DestroyBulletRpc()
     {
-        if(IsServer){
+        if (IsServer)
+        {
             GetComponent<NetworkObject>().Despawn(); // Despawner en la red
             Destroy(gameObject);
         }
@@ -30,7 +31,8 @@ public class BulletMove : NetworkBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if(IsServer){
+        if (IsServer)
+        {
             if (collision.gameObject.CompareTag("Player"))
             {
                 collision.gameObject.SendMessage("ApplyDamage", PLAYER_DAMAGE);
