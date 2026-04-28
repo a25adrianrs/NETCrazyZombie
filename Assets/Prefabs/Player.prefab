@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1145432672
+  GlobalObjectIdHash: 1264876302
   InScenePlacedSourceGlobalObjectIdHash: 1264876302
   DeferredDespawnTick: 0
   Ownership: 1
@@ -391,10 +391,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &4653150573600102542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,7 +426,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   playerUI: {fileID: 6269732253473814909}
---- !u!1 &5933363710475098705
+--- !u!1 &7672792920886699733
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -434,7 +434,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7387770952140562257}
+  - component: {fileID: 5877462157656965602}
   m_Layer: 0
   m_Name: ShootPoint
   m_TagString: Untagged
@@ -442,16 +442,16 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7387770952140562257
+--- !u!4 &5877462157656965602
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5933363710475098705}
+  m_GameObject: {fileID: 7672792920886699733}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.232}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -780,7 +780,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7034785766993125520}
-  - component: {fileID: 8421491834438017071}
+  - component: {fileID: 6560917270917456256}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -801,10 +801,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7387770952140562257}
+  - {fileID: 5877462157656965602}
   m_Father: {fileID: 2073156678160619462}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8421491834438017071
+--- !u!114 &6560917270917456256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -815,12 +815,11 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84d447c07654665cfb0d5e2bc6ee0690, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerFireBullet
   ShowTopMostFoldoutHeaderGroup: 1
-  serverBullet: {fileID: 2070482237836331046, guid: fcdff9b0e22843d458546aeab74220b5, type: 3}
-  clientBullet: {fileID: 2070482237836331046, guid: 37d16f26b1dd2db4cac0cbfe88c5ae41, type: 3}
-  shootPoint: {fileID: 7387770952140562257}
-  bulletSpeed: 20
+  proyectile: {fileID: 9046955875873534345, guid: 9c8ab3d5468156140a588100f48b7285, type: 3}
+  clientBullet: {fileID: 8863433660684503488, guid: 1c86fdcedcfab8b4ab615cb5caf98432, type: 3}
+  shootPoint: {fileID: 5877462157656965602}
 --- !u!1001 &1505703542431657016
 PrefabInstance:
   m_ObjectHideFlags: 0

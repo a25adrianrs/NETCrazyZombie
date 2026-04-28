@@ -3,41 +3,48 @@ using Unity.Netcode;
 
 public class BulletMove : NetworkBehaviour
 {
-    public float speed = 10.0f;
+    /*public float speed = 10.0f;
     public float lifeTime = 5f;
 
-    public int PLAYER_DAMAGE = 10;
+    public int PLAYER_DAMAGE = 10;*/
 
-    private void Start()
-    {
-        if (IsServer) // Solo el servidor controla la destrucción
-            Invoke(nameof(DestroyBulletRpc), lifeTime);
-    }
+    public float speed = 10f;
 
-    private void Update()
+    void Update()
     {
         transform.position += transform.forward * speed * Time.deltaTime;
     }
-
-    [Rpc(SendTo.Server)]
-    private void DestroyBulletRpc()
-    {
-        if (IsServer)
+    /* 
+        private void Start()
         {
-            GetComponent<NetworkObject>().Despawn(); // Despawner en la red
-            Destroy(gameObject);
+            if (IsServer) // Solo el servidor controla la destrucción
+                Invoke(nameof(DestroyBulletRpc), lifeTime);
         }
-    }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (IsServer)
+        private void Update()
         {
-            if (collision.gameObject.CompareTag("Player"))
+            transform.position += transform.forward * speed * Time.deltaTime;
+        }
+
+        [Rpc(SendTo.Server)]
+        private void DestroyBulletRpc()
+        {
+            if (IsServer)
             {
-                collision.gameObject.SendMessage("ApplyDamage", PLAYER_DAMAGE);
-                DestroyBulletRpc();
+                GetComponent<NetworkObject>().Despawn(); // Despawner en la red
+                Destroy(gameObject);
             }
         }
-    }
+
+        void OnCollisionEnter(Collision collision)
+        {
+            if (IsServer)
+            {
+                if (collision.gameObject.CompareTag("Player"))
+                {
+                    collision.gameObject.SendMessage("ApplyDamage", PLAYER_DAMAGE);
+                    DestroyBulletRpc();
+                }
+            }
+        } */
 }
