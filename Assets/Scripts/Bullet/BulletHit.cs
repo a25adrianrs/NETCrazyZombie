@@ -4,10 +4,17 @@ public class BulletHit : MonoBehaviour
 {
     [SerializeField] GameObject particle;
     [SerializeField] int damage = 10;
+
+    private bool hasHit = false;
     void OnCollisionEnter(Collision collision)
     {
         if (!NetworkManager.Singleton.IsServer) return; // Solo el servidor maneja la lógica de colisión   
+
+        if (hasHit) return; // Evita procesar múltiples colisiones
+        hasHit = true; // Marca que ya se ha procesado una colisión
+
         Debug.Log("Impacto con: " + collision.gameObject.name);
+
         //Daño al jugador si colisiona con una bala
         if (collision.gameObject.CompareTag("Player"))
         {

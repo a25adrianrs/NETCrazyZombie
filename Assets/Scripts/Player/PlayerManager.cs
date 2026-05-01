@@ -25,6 +25,8 @@ public class PlayerManager : NetworkBehaviour
 
     private HealthPlayer healthPlayer;
 
+
+
     private void Awake()
     {
 
