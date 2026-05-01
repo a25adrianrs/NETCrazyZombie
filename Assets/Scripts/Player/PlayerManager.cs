@@ -7,10 +7,10 @@ using Unity.Netcode;
 
 public class PlayerManager : NetworkBehaviour
 {
-    public const int MAX_LIFE = 100;
-    public const int BULLET_DAMAGE = 10;
-     
-    public NetworkVariable<int> health;
+    //public const int MAX_LIFE = 100;
+    //public const int BULLET_DAMAGE = 10;
+
+    //public NetworkVariable<int> health;
 
     public NetworkVariable<int> spawns;
     public NetworkVariable<FixedString128Bytes> username;
@@ -23,30 +23,61 @@ public class PlayerManager : NetworkBehaviour
 
     public TextMeshProUGUI txtSpawns;
 
+    private HealthPlayer healthPlayer;
+
     private void Awake()
     {
-        health = new NetworkVariable<int>(MAX_LIFE);
+
         username = new NetworkVariable<FixedString128Bytes>(Utilities.GetRandomUsername());
         playerSpawner = GameObject.Find("PlayerSpawner");
+        healthPlayer = GetComponent<HealthPlayer>();
     }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        health.OnValueChanged += OnClientHealthChanged;
+        //health.OnValueChanged += OnClientHealthChanged;
         spawns.OnValueChanged += OnSpawnsChanged;
         username.OnValueChanged += OnClientUsernameChanged;
+
+        // Mediante el componente HealthPlayer, accedemos a la variable de salud y 
+        // nos suscribimos al evento OnValueChanged para actualizar la barra de salud en los clientes. 
+        // Esto asegura que cada vez que la salud cambie, la interfaz de usuario se actualice correctamente 
+        // para reflejar el nuevo valor de salud del jugador.
+        healthPlayer.CurrentHealth.OnValueChanged += OnClientHealthChanged;
+
+        //Evento de muerte del jugador
+        healthPlayer.OnDie += Die;
+
         ChangeNameRpc(Utilities.GetRandomUsername());
-        gameObject.transform.position = playerSpawner.GetComponent<SpawnPointManager>().GetRandomSpawnPoint();
-        OnClientHealthChanged(MAX_LIFE, MAX_LIFE);
+
+        transform.position = playerSpawner.GetComponent<SpawnPointManager>().GetRandomSpawnPoint();
+
+        //Inicializamos la barra de salud con el valor actual de salud del jugador 
+        // al momento de la creación del objeto en la red.
+        OnClientHealthChanged(healthPlayer.CurrentHealth.Value, healthPlayer.CurrentHealth.Value);
+        //OnClientHealthChanged(MAX_LIFE, MAX_LIFE);
+
     }
 
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
-        health.OnValueChanged -= OnClientHealthChanged;
+        //health.OnValueChanged -= OnClientHealthChanged;
         username.OnValueChanged -= OnClientUsernameChanged;
-        ApplyDamage(0);
+        // Mediante el componente HealthPlayer, accedemos a la variable de salud y nos desuscribimos 
+        // del evento OnValueChanged para evitar posibles problemas de memoria o referencias a 
+        // objetos que ya no existen cuando el jugador se despawnea. Esto es importante para mantener 
+        // la estabilidad y el rendimiento del juego.
+        spawns.OnValueChanged -= OnSpawnsChanged;
+        //ApplyDamage(0);
+        // Al igual que con la suscripción al evento de cambio de salud, 
+        // también nos desuscribimos del evento de muerte del jugador para asegurarnos de que no haya referencias 
+        // a objetos que ya no existen cuando el jugador se despawnea.
+        healthPlayer.CurrentHealth.OnValueChanged -= OnClientHealthChanged;
+        //Evento de muerte del jugador
+        healthPlayer.OnDie -= Die;
+        //GetComponent<HealthPlayer>().TakenDamage(0);
     }
 
     private void OnClientUsernameChanged(FixedString128Bytes previousValue, FixedString128Bytes newValue)
@@ -54,41 +85,43 @@ public class PlayerManager : NetworkBehaviour
         m_UsernameLabel.text = newValue.ToString();
     }
 
-    void ApplyDamage(int damage)
-    {
-        if(IsOwner && health.Value > 0)
-        {
-            ApplyDamageRpc(damage);   
-        }        
-    }
+    /*  void ApplyDamage(int damage)
+     {
+         if(IsOwner && health.Value > 0)
+         {
+             ApplyDamageRpc(damage);   
+         }        
+     } */
 
     [Rpc(SendTo.Server)]
     public void ChangeNameRpc(FixedString128Bytes newValue)
     {
-        if(!IsServer) return;
-        username.Value = newValue;        
+        if (!IsServer) return;
+        username.Value = newValue;
     }
 
-    [Rpc(SendTo.Server)]
-    public void ApplyDamageRpc(int damage)
-    {
-        if(!IsServer) return;
-        
-        if (health.Value > 0)
-        {
-            health.Value -= damage;
-        }
-        if (health.Value <= 0)
-        {
-            Die();
-        }
-    }
 
+    /* 
+        [Rpc(SendTo.Server)]
+        public void ApplyDamageRpc(int damage)
+        {
+            if(!IsServer) return;
+
+            if (health.Value > 0)
+            {
+                health.Value -= damage;
+            }
+            if (health.Value <= 0)
+            {
+                Die();
+            }
+        }
+     */
     [Rpc(SendTo.Server)]
     public void ApplySpawnRpc()
     {
-        if(!IsServer) return;
-        
+        if (!IsServer) return;
+
         spawns.Value++;
     }
 
@@ -104,19 +137,21 @@ public class PlayerManager : NetworkBehaviour
 
     void OnSpawnsChanged(int previousValue, int newValue)
     {
-       txtSpawns.text = newValue.ToString();
+        txtSpawns.text = newValue.ToString();
     }
 
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if(IsServer){
-            if (collision.gameObject.CompareTag("Bullet"))
-            {
-                ApplyDamage(BULLET_DAMAGE);
-            }
-        }
-    }
+    /* void OnCollisionEnter(Collision collision)
+     {
+         if (IsServer)
+         {
+             if (collision.gameObject.CompareTag("Bullet"))
+             {
+                 //ApplyDamage(BULLET_DAMAGE);
+                 GetComponent<HealthPlayer>().TakenDamage(BULLET_DAMAGE);
+             }
+         }
+     }*/
 
     private void Die()
     {
@@ -135,11 +170,12 @@ public class PlayerManager : NetworkBehaviour
 
     private void Respawn()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
         //NetworkObject networkObject = GetComponent<NetworkObject>();
-        gameObject.transform.position = playerSpawner.GetComponent<SpawnPointManager>().GetRandomSpawnPoint();
-        health.Value = MAX_LIFE;
+        transform.position = playerSpawner.GetComponent<SpawnPointManager>().GetRandomSpawnPoint();
+        //health.Value = MAX_LIFE;
+        healthPlayer.ResetHealth();
         spawns.Value++;
         //networkObject.Spawn(); // Reaparece el jugador
     }

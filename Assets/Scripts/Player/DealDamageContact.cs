@@ -15,7 +15,13 @@ public class DealDamageContact : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.SendMessage("ApplyDamage", PLAYER_DAMAGE);
+            //collision.gameObject.SendMessage("ApplyDamage", PLAYER_DAMAGE);
+            var health = collision.gameObject.GetComponent<HealthPlayer>();
+
+            if (health != null)
+            {
+                health.TakenDamage(PLAYER_DAMAGE);
+            }
         }
     }
 }

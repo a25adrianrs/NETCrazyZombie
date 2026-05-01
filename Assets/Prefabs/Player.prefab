@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4196446986425510553}
   - component: {fileID: 6990858652546284834}
   - component: {fileID: 2511307794357877746}
+  - component: {fileID: 3440571663099424009}
   - component: {fileID: 2412632884928533322}
   - component: {fileID: 1724272368731631912}
   - component: {fileID: 4653150573600102542}
@@ -136,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1264876302
+  GlobalObjectIdHash: 1145432672
   InScenePlacedSourceGlobalObjectIdHash: 1264876302
   DeferredDespawnTick: 0
   Ownership: 1
@@ -210,6 +211,22 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &3440571663099424009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4968261313621213430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9937f3dfc5c53af4782444b5bebc5587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthPlayer
+  ShowTopMostFoldoutHeaderGroup: 1
+  maxHealth: 100
+  CurrentHealth:
+    m_InternalValue: 0
 --- !u!114 &2412632884928533322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,8 +240,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  health:
-    m_InternalValue: 0
   spawns:
     m_InternalValue: 0
   username:

@@ -11,7 +11,15 @@ public class BulletHit : MonoBehaviour
         //Daño al jugador si colisiona con una bala
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.SendMessage("ApplyDamage", damage);
+            //collision.gameObject.SendMessage("ApplyDamage", damage);
+            // Obtenemos la vida del personaje y la guardamos en la variable health
+
+            var health = collision.gameObject.GetComponent<HealthPlayer>();
+            if (health != null)
+            {
+                // Si la variable health es distinta de null entonces llamamos al metodo TakeDamage y le pasamos el daño
+                health.TakenDamage(damage);
+            }
         }
 
         if (particle != null)
