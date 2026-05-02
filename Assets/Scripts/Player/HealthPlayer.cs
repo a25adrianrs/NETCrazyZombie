@@ -4,7 +4,15 @@ using System;
 public class HealthPlayer : NetworkBehaviour
 {
 
+    // Creamos una clase HealthPlayer que hereda de NetworkBehaviour para manejar la salud del jugador en un juego multijugador utilizando Netcode for GameObjects.
+    // Esta clase contiene una variable de salud máxima (maxHealth) que se puede configurar desde 
+    // el inspector de Unity, y una NetworkVariable llamada CurrentHealth que representa la salud actual 
+    // del jugador y se sincroniza automáticamente entre el servidor y los clientes.
     [SerializeField] private int maxHealth = 100;
+
+    // La variable de salud actual del jugador es una NetworkVariable de tipo int, 
+    // lo que permite que su valor se sincronice automáticamente entre el servidor y los clientes.
+    public int MaxHealth => maxHealth;
 
     public NetworkVariable<int> CurrentHealth = new NetworkVariable<int>();
 

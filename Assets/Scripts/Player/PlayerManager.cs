@@ -15,7 +15,7 @@ public class PlayerManager : NetworkBehaviour
     public NetworkVariable<int> spawns;
     public NetworkVariable<FixedString128Bytes> username;
 
-    [SerializeField] Image m_HealthBarImage;
+    //[SerializeField] Image m_HealthBarImage;
     [SerializeField] TMP_Text m_UsernameLabel;
 
     private GameObject playerSpawner;
@@ -129,11 +129,11 @@ public class PlayerManager : NetworkBehaviour
 
     void OnClientHealthChanged(int previousHealth, int newHealth)
     {
-        m_HealthBarImage.rectTransform.localScale = new Vector3((float)newHealth / 100.0f, 1);//(float)newHealth / 100.0f;
+        // m_HealthBarImage.rectTransform.localScale = new Vector3((float)newHealth / 100.0f, 1);//(float)newHealth / 100.0f;
         const int k_MaxHealth = 100;
         float healthPercent = (float)newHealth / k_MaxHealth;
-        Color healthBarColor = new Color(1 - healthPercent, healthPercent, 0);
-        m_HealthBarImage.color = healthBarColor;
+        //Color healthBarColor = new Color(1 - healthPercent, healthPercent, 0);
+        //m_HealthBarImage.color = healthBarColor;
         txtHealth.text = newHealth.ToString();
     }
 
