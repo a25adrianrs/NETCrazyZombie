@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1145432672
+  GlobalObjectIdHash: 1264876302
   InScenePlacedSourceGlobalObjectIdHash: 1264876302
   DeferredDespawnTick: 0
   Ownership: 1
@@ -380,6 +380,7 @@ MonoBehaviour:
         byte0124: 0
         byte0125: 0
   m_UsernameLabel: {fileID: 1264818195039521092}
+  spawnPointManager: {fileID: 2350804058447508271, guid: 6f17c7683fff08a4ba6376cb7641a332, type: 3}
   txtHealth: {fileID: 8323256759470376865}
   txtSpawns: {fileID: 2642721575739739796}
 --- !u!54 &1724272368731631912

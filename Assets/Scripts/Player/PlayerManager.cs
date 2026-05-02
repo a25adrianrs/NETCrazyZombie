@@ -18,7 +18,8 @@ public class PlayerManager : NetworkBehaviour
     //[SerializeField] Image m_HealthBarImage;
     [SerializeField] TMP_Text m_UsernameLabel;
 
-    private GameObject playerSpawner;
+    //private GameObject playerSpawner;
+    [SerializeField] private SpawnPointManager spawnPointManager;
     public TextMeshProUGUI txtHealth;
 
     public TextMeshProUGUI txtSpawns;
@@ -31,7 +32,7 @@ public class PlayerManager : NetworkBehaviour
     {
 
         username = new NetworkVariable<FixedString128Bytes>(Utilities.GetRandomUsername());
-        playerSpawner = GameObject.Find("PlayerSpawner");
+        //playerSpawner = GameObject.Find("PlayerSpawner");
         healthPlayer = GetComponent<HealthPlayer>();
     }
 
@@ -53,7 +54,7 @@ public class PlayerManager : NetworkBehaviour
 
         ChangeNameRpc(Utilities.GetRandomUsername());
 
-        transform.position = playerSpawner.GetComponent<SpawnPointManager>().GetRandomSpawnPoint();
+        transform.position = spawnPointManager.GetRandomSpawnPoint();
 
         //Inicializamos la barra de salud con el valor actual de salud del jugador 
         // al momento de la creación del objeto en la red.
@@ -175,7 +176,7 @@ public class PlayerManager : NetworkBehaviour
         if (!IsServer) return;
 
         //NetworkObject networkObject = GetComponent<NetworkObject>();
-        transform.position = playerSpawner.GetComponent<SpawnPointManager>().GetRandomSpawnPoint();
+        transform.position = spawnPointManager.GetRandomSpawnPoint();
         //health.Value = MAX_LIFE;
         healthPlayer.ResetHealth();
         spawns.Value++;
