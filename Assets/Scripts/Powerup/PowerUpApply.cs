@@ -9,13 +9,19 @@ public class PowerUpApply : NetworkBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(IsServer){
+        if (IsServer)
+        {
             if (other.CompareTag("Player"))
             {
-                other.gameObject.SendMessage("ApplyDamage", -POWER);
+                var health = other.gameObject.GetComponent<HealthPlayer>();
+
+                if (health != null)
+                {
+                    health.TakenDamage(-POWER); // negativo = curar
+                }
 
                 AudioSource.PlayClipAtPoint(clip, transform.position);
-                
+
                 GetComponent<NetworkObject>().Despawn();
                 Destroy(gameObject);
             }
