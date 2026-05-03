@@ -7,10 +7,6 @@ using Unity.Netcode;
 
 public class PlayerManager : NetworkBehaviour
 {
-    //public const int MAX_LIFE = 100;
-    //public const int BULLET_DAMAGE = 10;
-
-    //public NetworkVariable<int> health;
 
     public NetworkVariable<int> spawns;
     public NetworkVariable<FixedString128Bytes> username;
