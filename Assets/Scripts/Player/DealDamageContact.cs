@@ -13,6 +13,7 @@ public class DealDamageContact : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
+        if (!NetworkManager.Singleton.IsServer) return;
         if (collision.gameObject.CompareTag("Player"))
         {
             //collision.gameObject.SendMessage("ApplyDamage", PLAYER_DAMAGE);
