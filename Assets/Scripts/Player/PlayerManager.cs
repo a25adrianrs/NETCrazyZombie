@@ -54,7 +54,10 @@ public class PlayerManager : NetworkBehaviour
 
         ChangeNameRpc(Utilities.GetRandomUsername());
 
-        transform.position = spawnPointManager.GetRandomSpawnPoint();
+        if (IsServer)
+        {
+            transform.position = spawnPointManager.GetRandomSpawnPoint();
+        }
 
         //Inicializamos la barra de salud con el valor actual de salud del jugador 
         // al momento de la creación del objeto en la red.
@@ -88,13 +91,6 @@ public class PlayerManager : NetworkBehaviour
         m_UsernameLabel.text = newValue.ToString();
     }
 
-    /*  void ApplyDamage(int damage)
-     {
-         if(IsOwner && health.Value > 0)
-         {
-             ApplyDamageRpc(damage);   
-         }        
-     } */
 
     [Rpc(SendTo.Server)]
     public void ChangeNameRpc(FixedString128Bytes newValue)
@@ -104,37 +100,9 @@ public class PlayerManager : NetworkBehaviour
     }
 
 
-    /* 
-        [Rpc(SendTo.Server)]
-        public void ApplyDamageRpc(int damage)
-        {
-            if(!IsServer) return;
-
-            if (health.Value > 0)
-            {
-                health.Value -= damage;
-            }
-            if (health.Value <= 0)
-            {
-                Die();
-            }
-        }
-     */
-    [Rpc(SendTo.Server)]
-    public void ApplySpawnRpc()
-    {
-        if (!IsServer) return;
-
-        spawns.Value++;
-    }
 
     void OnClientHealthChanged(int previousHealth, int newHealth)
     {
-        // m_HealthBarImage.rectTransform.localScale = new Vector3((float)newHealth / 100.0f, 1);//(float)newHealth / 100.0f;
-        const int k_MaxHealth = 100;
-        float healthPercent = (float)newHealth / k_MaxHealth;
-        //Color healthBarColor = new Color(1 - healthPercent, healthPercent, 0);
-        //m_HealthBarImage.color = healthBarColor;
         txtHealth.text = newHealth.ToString();
     }
 
@@ -144,42 +112,19 @@ public class PlayerManager : NetworkBehaviour
     }
 
 
-    /* void OnCollisionEnter(Collision collision)
-     {
-         if (IsServer)
-         {
-             if (collision.gameObject.CompareTag("Bullet"))
-             {
-                 //ApplyDamage(BULLET_DAMAGE);
-                 GetComponent<HealthPlayer>().TakenDamage(BULLET_DAMAGE);
-             }
-         }
-     }*/
-
     private void Die()
     {
         if (!IsServer) return;
 
-        /* NetworkObject networkObject = GetComponent<NetworkObject>();
 
-        if (networkObject != null)
-        {
-            networkObject.Despawn(true); // Despawn and destroy on all clients
-        }
-
-        Invoke("Respawn",3); */
         Respawn();
     }
 
     private void Respawn()
     {
         if (!IsServer) return;
-
-        //NetworkObject networkObject = GetComponent<NetworkObject>();
         transform.position = spawnPointManager.GetRandomSpawnPoint();
-        //health.Value = MAX_LIFE;
         healthPlayer.ResetHealth();
         spawns.Value++;
-        //networkObject.Spawn(); // Reaparece el jugador
     }
 }

@@ -3,7 +3,6 @@ using Unity.Netcode;
 public class BulletHit : MonoBehaviour
 {
     [SerializeField] GameObject particle;
-    [SerializeField] int damage = 10;
 
     private bool hasHit = false;
     void OnCollisionEnter(Collision collision)
