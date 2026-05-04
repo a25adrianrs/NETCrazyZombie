@@ -4,6 +4,6 @@ public class DestroySelfOnContact : MonoBehaviour
 {
     void OnCollisionEnter(Collision collision)
     {
-        Destroy(gameObject);
+        Destroy(transform.parent.gameObject);
     }
 }

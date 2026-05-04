@@ -39,6 +39,7 @@ public class HealthPlayer : NetworkBehaviour
         // Creamos una nueva variable newHealth en la cual guardaremos 
         // la vida restante que quda despues de restar el actual valor de Salud - el daño recibido.
         int newHealth = CurrentHealth.Value - damage;
+        Debug.Log($"Player took damage: {damage}, Health: {CurrentHealth.Value}");
         // Mediante Mathf.Clamp nos aseguramos de que al restar vida si esta fuese a dar un valor por debajo
         // de 0 está no pueda quedar en valor negativo y se asegure que sea 0
         CurrentHealth.Value = Mathf.Clamp(newHealth, 0, maxHealth);

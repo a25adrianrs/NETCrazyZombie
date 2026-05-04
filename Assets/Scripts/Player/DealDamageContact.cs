@@ -21,6 +21,7 @@ public class DealDamageContact : MonoBehaviour
 
             if (health != null)
             {
+                Debug.Log("Collision " + collision.gameObject.name);
                 health.TakenDamage(PLAYER_DAMAGE);
             }
         }
