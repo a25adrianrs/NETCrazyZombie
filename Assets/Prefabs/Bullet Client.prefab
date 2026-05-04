@@ -97,9 +97,6 @@ PrefabInstance:
       addedObject: {fileID: 3907734215623876782}
     - targetCorrespondingSourceObject: {fileID: 1927644516730251195, guid: ff412f8738409984b81faeebae90ab7f, type: 3}
       insertIndex: 5
-      addedObject: {fileID: 7614753474416116531}
-    - targetCorrespondingSourceObject: {fileID: 1927644516730251195, guid: ff412f8738409984b81faeebae90ab7f, type: 3}
-      insertIndex: 6
       addedObject: {fileID: 3010685351188028619}
   m_SourcePrefab: {fileID: 100100000, guid: ff412f8738409984b81faeebae90ab7f, type: 3}
 --- !u!1 &8863433660684503488 stripped
@@ -125,19 +122,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1927644516730251195, guid: ff412f8738409984b81faeebae90ab7f, type: 3}
   m_PrefabInstance: {fileID: 7474543079243547110}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7614753474416116531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9041740608892642909}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35bdc26a3bea8f8449524805ffe66f80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DealDamageContact
-  PLAYER_DAMAGE: 10
 --- !u!114 &3010685351188028619
 MonoBehaviour:
   m_ObjectHideFlags: 0

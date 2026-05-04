@@ -21,6 +21,7 @@ public class PlayerFireBullet : NetworkBehaviour
         {
             Instantiate(clientBullet, shootPoint.position, shootPoint.rotation);
             FireServerRPC(shootPoint.position, shootPoint.rotation);
+
             //FireRpc();
         }
     }
@@ -29,6 +30,7 @@ public class PlayerFireBullet : NetworkBehaviour
     void FireServerRPC(Vector3 pos, Quaternion rot)
     {
         GameObject bullet = Instantiate(proyectile, pos, rot);
+        FireClientRPC(shootPoint.position, shootPoint.rotation);
 
 
     }

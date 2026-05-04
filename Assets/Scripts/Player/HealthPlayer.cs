@@ -43,6 +43,7 @@ public class HealthPlayer : NetworkBehaviour
         // Mediante Mathf.Clamp nos aseguramos de que al restar vida si esta fuese a dar un valor por debajo
         // de 0 está no pueda quedar en valor negativo y se asegure que sea 0
         CurrentHealth.Value = Mathf.Clamp(newHealth, 0, maxHealth);
+        Debug.Log($"DAMAGE CALLED ON SERVER: {damage}");
 
         if (CurrentHealth.Value == 0)
         {
