@@ -1,64 +1,52 @@
 using UnityEngine;
 using Unity.Netcode;
 using System;
+
+// Administra la salud del jugador en un entorno de red.
+// El servidor es quien controla la salud y sincroniza el valor entre los clientes.
 public class HealthPlayer : NetworkBehaviour
 {
+    [SerializeField] private int maxHealth = 100; // Salud máxima configurada en el inspector.
 
-    // Creamos una clase HealthPlayer que hereda de NetworkBehaviour para manejar la salud del jugador en un juego multijugador utilizando Netcode for GameObjects.
-    // Esta clase contiene una variable de salud máxima (maxHealth) que se puede configurar desde 
-    // el inspector de Unity, y una NetworkVariable llamada CurrentHealth que representa la salud actual 
-    // del jugador y se sincroniza automáticamente entre el servidor y los clientes.
-    [SerializeField] private int maxHealth = 100;
+    public int MaxHealth => maxHealth; // Propiedad de solo lectura para acceder a la salud máxima.
 
-    // La variable de salud actual del jugador es una NetworkVariable de tipo int, 
-    // lo que permite que su valor se sincronice automáticamente entre el servidor y los clientes.
-    public int MaxHealth => maxHealth;
+    public NetworkVariable<int> CurrentHealth = new NetworkVariable<int>(); // Salud actual sincronizada en la red.
 
-    public NetworkVariable<int> CurrentHealth = new NetworkVariable<int>();
+    private bool isDead; // Indica si el jugador ya ha muerto.
 
-    private bool isDead;
+    public Action OnDie; // Evento que se dispara cuando el jugador muere.
 
-    public Action OnDie;
-
-
-
-
-    // Solo el servidor inicializa el maximo de Vida del Player
     public override void OnNetworkSpawn()
     {
-        if (!IsServer) return;
+        if (!IsServer) return; // Solo el servidor inicializa los valores de salud.
 
-        CurrentHealth.Value = maxHealth;
-        isDead = false;
+        CurrentHealth.Value = maxHealth; // Fija la salud inicial al máximo.
+        isDead = false; // Reinicia el estado de muerte.
     }
 
     public void TakenDamage(int damage)
     {
-        if (!IsServer) return;
-        if (isDead) return;
-        // Creamos una nueva variable newHealth en la cual guardaremos 
-        // la vida restante que quda despues de restar el actual valor de Salud - el daño recibido.
-        int newHealth = CurrentHealth.Value - damage;
+        if (!IsServer) return; // Solo el servidor aplica daño.
+        if (isDead) return; // Ignora daño si ya está muerto.
+
+        int newHealth = CurrentHealth.Value - damage; // Calcula la nueva salud.
         Debug.Log($"Player took damage: {damage}, Health: {CurrentHealth.Value}");
-        // Mediante Mathf.Clamp nos aseguramos de que al restar vida si esta fuese a dar un valor por debajo
-        // de 0 está no pueda quedar en valor negativo y se asegure que sea 0
+
+        // Clamp asegura que la salud no baje de 0 ni supere el máximo.
         CurrentHealth.Value = Mathf.Clamp(newHealth, 0, maxHealth);
         Debug.Log($"DAMAGE CALLED ON SERVER: {damage}");
 
         if (CurrentHealth.Value == 0)
         {
-            isDead = true;
-            OnDie?.Invoke();
+            isDead = true; // Marca al jugador como muerto.
+            OnDie?.Invoke(); // Dispara el evento de muerte si hay suscriptores.
         }
     }
 
     public void ResetHealth()
     {
-        if (!IsServer) return;
-        CurrentHealth.Value = maxHealth;
-        isDead = false;
+        if (!IsServer) return; // Solo el servidor puede resetear la salud.
+        CurrentHealth.Value = maxHealth; // Vuelve a la salud máxima.
+        isDead = false; // Reinicia el estado de muerte.
     }
-
-
-
 }

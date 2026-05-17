@@ -1,50 +1,15 @@
 using UnityEngine;
 using Unity.Netcode;
 
+// Mueve la bala hacia adelante en cada frame.
+// No maneja colisiones ni destrucción en esta clase, solo el movimiento visual.
 public class BulletMove : MonoBehaviour
 {
-    /*public float speed = 10.0f;
-    public float lifeTime = 5f;
-
-    public int PLAYER_DAMAGE = 10;*/
-
-    public float speed = 10f;
+    public float speed = 10f; // Velocidad a la que avanza la bala.
 
     void Update()
     {
+        // Avanza la bala en la dirección local "forward".
         transform.position += transform.forward * speed * Time.deltaTime;
     }
-    /* 
-        private void Start()
-        {
-            if (IsServer) // Solo el servidor controla la destrucción
-                Invoke(nameof(DestroyBulletRpc), lifeTime);
-        }
-
-        private void Update()
-        {
-            transform.position += transform.forward * speed * Time.deltaTime;
-        }
-
-        [Rpc(SendTo.Server)]
-        private void DestroyBulletRpc()
-        {
-            if (IsServer)
-            {
-                GetComponent<NetworkObject>().Despawn(); // Despawner en la red
-                Destroy(gameObject);
-            }
-        }
-
-        void OnCollisionEnter(Collision collision)
-        {
-            if (IsServer)
-            {
-                if (collision.gameObject.CompareTag("Player"))
-                {
-                    collision.gameObject.SendMessage("ApplyDamage", PLAYER_DAMAGE);
-                    DestroyBulletRpc();
-                }
-            }
-        } */
 }

@@ -1,9 +1,11 @@
 using Unity.Netcode;
 using UnityEngine;
 
+// Muestra una interfaz simple de GUI para iniciar la sesión de red como Host, Cliente o Servidor.
+// Este script usa OnGUI para dibujar botones y etiquetas en pantalla.
 public class StartSesionManager : MonoBehaviour
 {
-    private static NetworkManager m_NetworkManager;
+    private static NetworkManager m_NetworkManager; // Referencia global al NetworkManager del objeto.
 
     void Awake()
     {

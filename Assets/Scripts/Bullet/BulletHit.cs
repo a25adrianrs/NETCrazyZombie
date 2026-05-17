@@ -1,47 +1,31 @@
 using UnityEngine;
 using Unity.Netcode;
+
+// Maneja el impacto de la bala cuando colisiona con algo.
+// El servidor decide qué hacer y despawnea la bala de la red.
 public class BulletHit : MonoBehaviour
 {
-    [SerializeField] GameObject particle;
+    [SerializeField] GameObject particle; // Efecto visual que se reproduce al impactar.
 
-    private bool hasHit = false;
+    private bool hasHit = false; // Evita procesar el mismo impacto varias veces.
+
     void OnCollisionEnter(Collision collision)
     {
-        if (!NetworkManager.Singleton.IsServer) return; // Solo el servidor maneja la lógica de colisión   
+        if (!NetworkManager.Singleton.IsServer) return; // Solo el servidor maneja la lógica de impacto.
+        if (hasHit) return; // Ignora impactos adicionales después del primero.
 
-        if (hasHit) return; // Evita procesar múltiples colisiones
-        hasHit = true; // Marca que ya se ha procesado una colisión
-
+        hasHit = true;
         Debug.Log("Impacto con: " + collision.gameObject.name);
-
-        //Daño al jugador si colisiona con una bala
-        /* if (collision.gameObject.CompareTag("Player"))
-         {
-             //collision.gameObject.SendMessage("ApplyDamage", damage);
-             // Obtenemos la vida del personaje y la guardamos en la variable health
-
-             var health = collision.gameObject.GetComponent<HealthPlayer>();
-             if (health != null)
-             {
-                 // Si la variable health es distinta de null entonces llamamos al metodo TakeDamage y le pasamos el daño
-                 health.TakenDamage(damage);
-             }
-         }*/
 
         if (particle != null)
         {
-            // Instanciamos el efecto de impacto
-            Instantiate(particle, transform.position, Quaternion.identity);
+            Instantiate(particle, transform.position, Quaternion.identity); // Crea el efecto de impacto.
         }
 
-        //Destruimos el proyectil en la red
         NetworkObject netObject = GetComponent<NetworkObject>();
         if (netObject != null && netObject.IsSpawned)
         {
-            netObject.Despawn(); // Despawner en la red
+            netObject.Despawn(); // Elimina la bala sincronizada en red.
         }
-
-        // Destruimos el proyectil
-        //gameObject.SetActive(false);
     }
 }

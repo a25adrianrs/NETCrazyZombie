@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+// Clase estática de utilidades con métodos auxiliares que se pueden usar en múltiples scripts.
 public static class Utilities
 {
     static readonly string[] s_Usernames = new string[] { "MaryDaBest", "BobTheBell", "FranklyVal", "Georgie96", "OP Morgan" };
 
     /// <summary>
-    /// Generates a random color
+    /// Genera un color aleatorio.
     /// </summary>
-    /// <returns>A random RGBA color</returns>
+    /// <returns>Un color RGBA con componentes RGB aleatorios y alpha 255.</returns>
     public static Color32 GetRandomColor() => new Color32((byte)UnityEngine.Random.Range(0, 256), (byte)UnityEngine.Random.Range(0, 256), (byte)UnityEngine.Random.Range(0, 256), 255);
     public static string GetRandomUsername() => s_Usernames[UnityEngine.Random.Range(0, s_Usernames.Length)];
 

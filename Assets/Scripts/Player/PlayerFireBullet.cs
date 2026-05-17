@@ -2,81 +2,35 @@ using System;
 using UnityEngine;
 using Unity.Netcode;
 
+// Controla el disparo de proyectiles en red.
+// El propietario local genera la bala visual y pide al servidor que cree la bala real.
 public class PlayerFireBullet : NetworkBehaviour
 {
-    [SerializeField] GameObject proyectile;
-    [SerializeField] GameObject clientBullet;
-    [SerializeField] Transform shootPoint;
-
-    /* [SerializeField] GameObject serverBullet;
-     [SerializeField] GameObject clientBullet;
-     [SerializeField] Transform shootPoint;
-     [SerializeField] float bulletSpeed = 20f;*/
-
+    [SerializeField] GameObject proyectile; // Prefab de la bala que se instanciará en el servidor.
+    [SerializeField] GameObject clientBullet; // Prefab de la bala visual local.
+    [SerializeField] Transform shootPoint; // Punto de origen del disparo.
 
     void Update()
     {
-        if (!IsOwner) return;
+        if (!IsOwner) return; // Solo el cliente local del jugador dispara.
         if (Input.GetButtonDown("Fire1"))
         {
-            Instantiate(clientBullet, shootPoint.position, shootPoint.rotation);
-            FireServerRPC(shootPoint.position, shootPoint.rotation);
-
-            //FireRpc();
+            Instantiate(clientBullet, shootPoint.position, shootPoint.rotation); // Bala visual local inmediata.
+            FireServerRPC(shootPoint.position, shootPoint.rotation); // Pide al servidor que cree la bala real.
         }
     }
 
     [Rpc(SendTo.Server)]
     void FireServerRPC(Vector3 pos, Quaternion rot)
     {
-        GameObject bullet = Instantiate(proyectile, pos, rot);
-        FireClientRPC(shootPoint.position, shootPoint.rotation);
-
-
+        GameObject bullet = Instantiate(proyectile, pos, rot); // Instancia la bala real en el servidor.
+        FireClientRPC(shootPoint.position, shootPoint.rotation); // Informa a todos los clientes del disparo.
     }
 
     [Rpc(SendTo.ClientsAndHost)]
     void FireClientRPC(Vector3 pos, Quaternion rot)
     {
-        if (IsOwner) return; // El cliente que disparó ya instanció su bala visual, no necesita otra
-        Instantiate(clientBullet, pos, rot);
+        if (IsOwner) return; // El cliente que disparó ya creó su bala visual, no necesita otra.
+        Instantiate(clientBullet, pos, rot); // Crea una bala visual para los demás clientes.
     }
-
-    /*[Rpc(SendTo.Server)]
-    void FireRpc()
-    {
-        GameObject bala = Instantiate(proyectile, transform.position, transform.rotation);
-        bala.GetComponent<NetworkObject>().Spawn(true);
-    }*/
-    /* void SpawnClientBullet(Vector3 pos, Vector3 dir)
-     {
-         // Solo el cliente que es el propietario del jugador dispara la bala visual
-         GameObject b = Instantiate(clientBullet, pos, Quaternion.identity);
-         // Orienta la bala en la dirección del disparo
-         b.transform.forward = dir;
-         // Aplica velocidad a la bala
-         Rigidbody rb = b.GetComponent<Rigidbody>();
-         if (rb != null)
-         {
-             // La bala visual se mueve pero no se sincroniza en la red, es solo para feedback visual del disparo
-             rb.linearVelocity = dir * bulletSpeed;
-         }
-     }
-
-     [Rpc(SendTo.Server)]
-     void ShootServerRpc(Vector3 pos, Vector3 dir)
-     {
-         // Solo el servidor crea la bala real que se sincroniza en la red
-         GameObject b = Instantiate(serverBullet, pos, Quaternion.identity);
-         // Orienta la bala en la dirección del disparo
-         b.transform.forward = dir;
-         // Aplica velocidad a la bala
-         Rigidbody rb = b.GetComponent<Rigidbody>();
-         if (rb != null)
-         {
-             rb.linearVelocity = dir * bulletSpeed;
-         }
-         // Spawnea la bala en la red para que todos los clientes la vean
-         b.GetComponent<NetworkObject>().Spawn();
-     }*/
 }

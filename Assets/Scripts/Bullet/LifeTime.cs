@@ -1,16 +1,19 @@
 using UnityEngine;
 using Unity.Netcode;
+
+// Destruye el objeto después de un tiempo de vida definido, despawneando también en la red.
 public class LifeTime : MonoBehaviour
 {
-    [SerializeField] private float lifeTime = 5f;
+    [SerializeField] private float lifeTime = 5f; // Tiempo en segundos antes de destruir el objeto.
 
     private NetworkObject netObject;
+
     void Start()
     {
         netObject = GetComponent<NetworkObject>();
-        // SOLO el servidor programa la destrucción
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
         {
+            // Solo el servidor programa y ejecuta la destrucción en red.
             Invoke(nameof(DestroyAfterTime), lifeTime);
         }
     }
@@ -19,9 +22,9 @@ public class LifeTime : MonoBehaviour
     {
         if (netObject != null && netObject.IsSpawned)
         {
-            netObject.Despawn(); // Despawner en la red
+            netObject.Despawn(); // Elimina el objeto sincronizado de la red.
         }
-        // Destruimos el objeto localmente
-        Destroy(gameObject);
+
+        Destroy(gameObject); // Destruye el GameObject local.
     }
 }
